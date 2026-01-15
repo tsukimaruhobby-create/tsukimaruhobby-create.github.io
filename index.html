@@ -1,64 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Jmap jQuery Example</title>
+<title>日本地図</title>
 
+<!-- Bootstrap & jQuery -->
 <link rel="stylesheet"
  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<script src="./jmap.js"></script>
-
-<script>
-$(document).ready(function() {
-
-  // 都道府県コード → ページ対応表
-  const pageMap = {
-    1: "hokkaido.html",
-    13: "tokyo.html",
-    27: "osaka.html",
-    47: "okinawa.html"
-    // 必要な県を追加
-  };
-
-  $('#jmap').jmap({
-    height: '450px',
-    showInfobox: true,
-
-    areas: [
-      {code:1, name:"北海道", color:"#7f7eda"},
-      {code:13, name:"東京", color:"#7ecfea"},
-      {code:27, name:"大阪", color:"#ffe966"},
-      {code:47, name:"沖縄", color:"#eb98ff"}
-    ],
-
-    onSelect: function(e, data) {
-      const page = pageMap[data.code];
-      if (page) {
-        window.location.href = page;
-      } else {
-        alert("ページ準備中です");
-      }
-    }
-  });
-
-});
-</script>
+<!-- Japan Map -->
+<script src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
 </head>
 
 <body>
-<div class="container mt-3">
+<div id="jmap"></div>
 
-  <div id="jmap">
-    <div class="jmap-infobox">
-      <h5>世界に一つだけの地図</h5>
-      <p>都道府県をクリックしてください</p>
-    </div>
-  </div>
+<script>
+$(function(){
+  var areaLinks = {
+    1:"hokkaido.html",
+    13:"tokyo.html",
+    27:"osaka.html",
+    47:"okinawa.html"
+    // ここに47都道府県分のリンクを置く
+  };
 
-</div>
+  var d = new jpmap.japanMap(document.getElementById("jmap"), {
+    areas:[
+      {code:1,name:"北海道",color:"#7f7eda",hoverColor:"#b3b2ee"},
+      {code:13,name:"東京",color:"#7ecfea",hoverColor:"#b7e5f4"},
+      {code:27,name:"大阪",color:"#ffe966",hoverColor:"#fff19c"},
+      {code:47,name:"沖縄",color:"#eb98ff",hoverColor:"#f5c9ff"}
+      // 他の県コードも同様に追加
+    ],
+    showsPrefectureName: true,
+    width: 800,
+    movesIslands: true,
+    lang: 'ja',
+    onSelect: function(data){
+      location.href = areaLinks[data.area.code];
+    }
+  });
+});
+</script>
+
 </body>
 </html>
