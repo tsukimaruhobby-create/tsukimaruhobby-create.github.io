@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>日本地図検索</title>
+<title>日本地図（47都道府県）</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   body {
@@ -14,67 +14,151 @@
   svg {
     width: 100%;
     max-width: 500px;
+    height: auto;
   }
   .pref {
-    fill: #e0e0e0;
-    stroke: #fff;
+    fill: #e6e6e6;
+    stroke: #ffffff;
+    stroke-width: 1;
+    cursor: pointer;
   }
-  .active {
-    fill: #ff9966;
+  .pref:hover {
+    fill: #ffb366;
   }
-  button {
-    margin: 4px;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    background: #ddd;
-  }
-  button:hover {
-    background: #bbb;
+  #info {
+    margin-top: 12px;
+    font-size: 18px;
+    min-height: 1.5em;
   }
 </style>
 </head>
 <body>
 
-<h2>日本地図（地方検索）</h2>
+<h2>日本地図（47都道府県）</h2>
 
-<!-- 地方検索 -->
-<div>
-  <button onclick="selectRegion('関東')">関東</button>
-  <button onclick="selectRegion('関西')">関西</button>
-  <button onclick="selectRegion('中部')">中部</button>
-  <button onclick="selectRegion('東北')">東北</button>
-  <button onclick="selectRegion('九州')">九州</button>
-</div>
+<!-- 47都道府県SVG -->
+<svg viewBox="0 0 800 1200">
 
-<!-- 簡略リアル地図（後で完全SVGに差し替え） -->
-<svg viewBox="0 0 600 900">
-  <path id="関東" class="pref" d="M420 310 L520 330 L500 420 L420 400 Z"/>
-  <path id="関西" class="pref" d="M300 430 L360 450 L340 540 L280 520 Z"/>
-  <path id="中部" class="pref" d="M360 360 L420 380 L400 480 L340 460 Z"/>
-  <path id="東北" class="pref" d="M430 180 L520 200 L500 300 L420 280 Z"/>
-  <path id="九州" class="pref" d="M160 650 L260 690 L230 820 L130 780 Z"/>
+<!-- 北海道 -->
+<path class="pref" d="M520 40 L740 120 L700 300 L520 260 Z"
+ onclick="showPref('北海道')" />
+
+<!-- 東北 -->
+<path class="pref" d="M560 320 L700 340 L680 520 L560 500 Z"
+ onclick="showPref('青森')" />
+<path class="pref" d="M560 520 L700 540 L680 680 L560 660 Z"
+ onclick="showPref('岩手')" />
+<path class="pref" d="M520 540 L560 560 L540 680 L500 660 Z"
+ onclick="showPref('秋田')" />
+<path class="pref" d="M500 680 L680 700 L660 820 L500 800 Z"
+ onclick="showPref('宮城')" />
+<path class="pref" d="M460 680 L500 700 L480 820 L440 800 Z"
+ onclick="showPref('山形')" />
+<path class="pref" d="M460 820 L660 840 L640 960 L460 940 Z"
+ onclick="showPref('福島')" />
+
+<!-- 関東 -->
+<path class="pref" d="M520 960 L620 980 L600 1080 L520 1060 Z"
+ onclick="showPref('茨城')" />
+<path class="pref" d="M500 980 L520 1000 L500 1080 L480 1060 Z"
+ onclick="showPref('栃木')" />
+<path class="pref" d="M480 1000 L500 1020 L480 1100 L460 1080 Z"
+ onclick="showPref('群馬')" />
+<path class="pref" d="M460 1020 L520 1040 L500 1120 L440 1100 Z"
+ onclick="showPref('埼玉')" />
+<path class="pref" d="M520 1040 L600 1060 L580 1140 L520 1120 Z"
+ onclick="showPref('千葉')" />
+<path class="pref" d="M460 1100 L520 1120 L500 1180 L460 1160 Z"
+ onclick="showPref('東京')" />
+<path class="pref" d="M440 1120 L460 1140 L440 1180 L420 1160 Z"
+ onclick="showPref('神奈川')" />
+
+<!-- 中部 -->
+<path class="pref" d="M360 860 L460 880 L440 980 L360 960 Z"
+ onclick="showPref('新潟')" />
+<path class="pref" d="M360 980 L440 1000 L420 1100 L360 1080 Z"
+ onclick="showPref('長野')" />
+<path class="pref" d="M340 1000 L360 1020 L340 1100 L320 1080 Z"
+ onclick="showPref('山梨')" />
+<path class="pref" d="M300 1000 L340 1020 L320 1100 L280 1080 Z"
+ onclick="showPref('静岡')" />
+<path class="pref" d="M280 980 L320 1000 L300 1080 L260 1060 Z"
+ onclick="showPref('愛知')" />
+<path class="pref" d="M300 940 L360 960 L340 1020 L280 1000 Z"
+ onclick="showPref('岐阜')" />
+<path class="pref" d="M340 900 L380 920 L360 960 L320 940 Z"
+ onclick="showPref('富山')" />
+<path class="pref" d="M300 900 L340 920 L320 960 L280 940 Z"
+ onclick="showPref('石川')" />
+<path class="pref" d="M260 900 L300 920 L280 960 L240 940 Z"
+ onclick="showPref('福井')" />
+
+<!-- 関西 -->
+<path class="pref" d="M260 960 L300 980 L280 1040 L240 1020 Z"
+ onclick="showPref('滋賀')" />
+<path class="pref" d="M220 960 L260 980 L240 1040 L200 1020 Z"
+ onclick="showPref('京都')" />
+<path class="pref" d="M200 980 L240 1000 L220 1060 L180 1040 Z"
+ onclick="showPref('大阪')" />
+<path class="pref" d="M180 960 L220 980 L200 1040 L160 1020 Z"
+ onclick="showPref('兵庫')" />
+<path class="pref" d="M220 1040 L260 1060 L240 1120 L200 1100 Z"
+ onclick="showPref('奈良')" />
+<path class="pref" d="M200 1100 L260 1120 L240 1180 L180 1160 Z"
+ onclick="showPref('和歌山')" />
+<path class="pref" d="M260 1040 L300 1060 L280 1120 L240 1100 Z"
+ onclick="showPref('三重')" />
+
+<!-- 中国 -->
+<path class="pref" d="M120 960 L180 980 L160 1040 L100 1020 Z"
+ onclick="showPref('鳥取')" />
+<path class="pref" d="M80 960 L120 980 L100 1040 L60 1020 Z"
+ onclick="showPref('島根')" />
+<path class="pref" d="M120 1040 L180 1060 L160 1120 L100 1100 Z"
+ onclick="showPref('岡山')" />
+<path class="pref" d="M80 1040 L120 1060 L100 1120 L60 1100 Z"
+ onclick="showPref('広島')" />
+<path class="pref" d="M40 1040 L80 1060 L60 1120 L20 1100 Z"
+ onclick="showPref('山口')" />
+
+<!-- 四国 -->
+<path class="pref" d="M180 1140 L240 1160 L220 1200 L160 1180 Z"
+ onclick="showPref('徳島')" />
+<path class="pref" d="M140 1140 L180 1160 L160 1200 L120 1180 Z"
+ onclick="showPref('香川')" />
+<path class="pref" d="M100 1160 L160 1180 L140 1220 L80 1200 Z"
+ onclick="showPref('愛媛')" />
+<path class="pref" d="M140 1180 L220 1200 L200 1240 L120 1220 Z"
+ onclick="showPref('高知')" />
+
+<!-- 九州 -->
+<path class="pref" d="M100 1240 L160 1260 L140 1320 L80 1300 Z"
+ onclick="showPref('福岡')" />
+<path class="pref" d="M80 1260 L100 1280 L80 1320 L60 1300 Z"
+ onclick="showPref('佐賀')" />
+<path class="pref" d="M40 1260 L80 1280 L60 1320 L20 1300 Z"
+ onclick="showPref('長崎')" />
+<path class="pref" d="M100 1320 L160 1340 L140 1400 L80 1380 Z"
+ onclick="showPref('熊本')" />
+<path class="pref" d="M160 1320 L200 1340 L180 1400 L140 1380 Z"
+ onclick="showPref('大分')" />
+<path class="pref" d="M100 1400 L160 1420 L140 1480 L80 1460 Z"
+ onclick="showPref('宮崎')" />
+<path class="pref" d="M60 1460 L160 1500 L120 1580 L40 1540 Z"
+ onclick="showPref('鹿児島')" />
+
+<!-- 沖縄 -->
+<path class="pref" d="M300 1540 L360 1560 L340 1600 L280 1580 Z"
+ onclick="showPref('沖縄')" />
+
 </svg>
 
-<h3 id="regionTitle">地方を選択してください</h3>
-<div id="prefList"></div>
+<div id="info">都道府県をクリックしてください</div>
 
 <script>
-const regionData = {
-  "関東": ["東京", "神奈川", "千葉", "埼玉", "茨城", "栃木", "群馬"],
-  "関西": ["大阪", "京都", "兵庫", "奈良", "滋賀", "和歌山", "三重"],
-  "中部": ["愛知", "静岡", "長野", "新潟", "岐阜", "富山", "石川", "福井", "山梨"],
-  "東北": ["青森", "岩手", "宮城", "秋田", "山形", "福島"],
-  "九州": ["福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島"]
-};
-
-function selectRegion(region) {
-  document.querySelectorAll(".pref").forEach(p => p.classList.remove("active"));
-  document.getElementById(region).classList.add("active");
-
-  document.getElementById("regionTitle").textContent = region + "地方";
-  document.getElementById("prefList").innerHTML =
-    regionData[region].map(p => `<div>${p}</div>`).join("");
+function showPref(name) {
+  document.getElementById("info").textContent =
+    name + " を選択しました";
 }
 </script>
 
