@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>日本地図（47都道府県）</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body {
-    font-family: sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 10px;
-  }
-  svg {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-  }
-  .pref {
-    fill: #e6e6e6;
-    stroke: #ffffff;
-    stroke-width: 1;
-    cursor: pointer;
-  }
-  .pref:hover {
-    fill: #ffb366;
-  }
-  #info {
-    margin-top: 12px;
-    font-size: 18px;
-    min-height: 1.5em;
-  }
-</style>
+<head>
+    <title>Jmap jQuery Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./jmap.js"></script>
+    <script type = "text/javascript">
+        // ここに「Javascript」に記載する内容
+    </script>
 </head>
 <body>
+    <!-- Jmap表示位置 -->
+    <div id="jmap"
+        <div class="jmap-infobox">
+            <h5 class="h5">世界に一つだけの地図</h5>
+            <p>地図をクリックするとモーダルが表示されます。</p>
+        </div>
+    ></div>
+
+    <!-- モーダル用HTML -->
+    <div class="modal fade" id="prefectureModal" tabindex="-1" role="dialog" aria-labelledby="prefectureModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="prefectureModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body overflow-auto" style="height:350px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 <h2>日本地図（47都道府県）</h2>
 
