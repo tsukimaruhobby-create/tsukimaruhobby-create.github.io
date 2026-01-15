@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>日本地図</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 10px;
+    }
+    svg {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+    }
+    .pref {
+      fill: #dddddd;
+      stroke: #ffffff;
+      cursor: pointer;
+    }
+    .pref:hover {
+      fill: #ffcc66;
+    }
+    #info {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>日本地図（県クリック）</h2>
+
+<!-- 超簡略日本地図（例） -->
+<svg viewBox="0 0 200 300">
+  <rect class="pref" x="120" y="20" width="40" height="40" onclick="showPref('北海道')" />
+  <rect class="pref" x="100" y="80" width="40" height="40" onclick="showPref('東京')" />
+  <rect class="pref" x="80" y="130" width="40" height="40" onclick="showPref('大阪')" />
+  <rect class="pref" x="60" y="180" width="40" height="40" onclick="showPref('福岡')" />
+</svg>
+
+<div id="info">県をクリックしてください</div>
+
+<script>
+  function showPref(name) {
+    document.getElementById("info").textContent =
+      name + " を選択しました";
+  }
+</script>
+
+</body>
+</html>
