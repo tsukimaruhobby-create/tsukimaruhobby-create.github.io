@@ -5,23 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>月丸マップ</title>
 
-<link rel="icon" href="favicon.png">
-
-<!-- Bootstrap / jQuery -->
-<link rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-<!-- jmap本体 -->
-<script src="./jmap.js"></script>
-
 <style>
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont,
-               "Helvetica Neue", "Hiragino Kaku Gothic ProN",
-               "Noto Sans JP", sans-serif;
+               "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   background: #f8f9fa;
 }
 
@@ -29,57 +17,50 @@ header {
   text-align: center;
   padding: 12px 0;
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: bold;
   background: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #ddd;
 }
 
-#jmap {
+#my-map {
   width: 100%;
   max-width: 720px;
-  height: 65vh;          /* ← 高さ必須 */
+  height: 500px;
   margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  header {
-    font-size: 1.8rem;
-  }
-  #jmap {
-    height: 480px;
-  }
 }
 </style>
 
-<script>
-$(function () {
+<!-- jpmap 本体 -->
+<script src="./jmap.js"></script>
 
-  const pageMap = {
-    1:"hokkaido.html", 13:"tokyo.html", 27:"osaka.html", 47:"okinawa.html"
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  var pageMap = {
+    "Hokkaido": "hokkaido.html",
+    "Tokyo": "tokyo.html",
+    "Osaka": "osaka.html",
+    "Okinawa": "okinawa.html"
   };
 
-  $('#jmap').jmap({
-    height: '100%',
-    showInfobox: true,
-    fontSize: '0.75rem',
+  var d = new jpmap.japanMap(
+    document.getElementById("my-map"),
+    {
+      showsPrefectureName: true,
+      width: 720,
+      movesIslands: true,
+      lang: 'ja',
 
-    areas: [
-      {code:1, name:"北海道", color:"#7f7eda", hoverColor:"#b3b2ee"},
-      {code:13, name:"東京", color:"#7ecfea", hoverColor:"#b7e5f4"},
-      {code:27, name:"大阪", color:"#ffe966", hoverColor:"#fff19c"},
-      {code:47, name:"沖縄", color:"#eb98ff", hoverColor:"#f5c9ff"}
-      /* ← Qiita最終版47都道府県をここに全部入れる */
-    ],
-
-    onSelect: function(e, data) {
-      const page = pageMap[data.code];
-      if (page) {
-        location.href = page;
-      } else {
-        alert(data.name + " のページは準備中です");
+      onSelect: function(data){
+        var page = pageMap[data.name];
+        if (page) {
+          location.href = page;
+        } else {
+          alert(data.name + " のページは準備中です");
+        }
       }
     }
-  });
+  );
 
 });
 </script>
@@ -89,13 +70,7 @@ $(function () {
 
 <header>月丸マップ</header>
 
-<div class="container-fluid mt-2">
-  <div id="jmap">
-    <div class="jmap-infobox">
-      <p>調べたい都道府県を選択してください</p>
-    </div>
-  </div>
-</div>
+<div id="my-map"></div>
 
 </body>
 </html>
