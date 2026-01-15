@@ -161,6 +161,46 @@ function showPref(name) {
     name + " を選択しました";
 }
 </script>
+<script>
+const prefData = {
+  "東京": {
+    text: "よく行く場所。研究と飲みが多い。",
+    image: "https://via.placeholder.com/300x200?text=Tokyo",
+    instagram: "https://www.instagram.com/"
+  },
+  "神奈川": {
+    text: "横浜・鎌倉。",
+    image: "https://via.placeholder.com/300x200?text=Kanagawa",
+    instagram: "https://www.instagram.com/"
+  },
+  "大阪": {
+    text: "たこ焼き。",
+    image: "https://via.placeholder.com/300x200?text=Osaka",
+    instagram: "https://www.instagram.com/"
+  }
+  // ← 他の県もここに追加
+};
+
+function showPref(name) {
+  const info = document.getElementById("info");
+  const data = prefData[name];
+
+  if (data) {
+    info.innerHTML = `
+      <h3>${name}</h3>
+      <p>${data.text}</p>
+      <img src="${data.image}" style="width:100%;max-width:300px;border-radius:10px;">
+      <p>
+        <a href="${data.instagram}" target="_blank">
+          Instagramを見る
+        </a>
+      </p>
+    `;
+  } else {
+    info.textContent = name + " の情報はまだありません";
+  }
+}
+</script>
 
 </body>
 </html>
