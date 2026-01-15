@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>日本地図（47都道府県）</title>
+<title>日本地図検索</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   body {
@@ -14,74 +14,67 @@
   svg {
     width: 100%;
     max-width: 500px;
-    height: auto;
   }
   .pref {
     fill: #e0e0e0;
-    stroke: #ffffff;
-    cursor: pointer;
+    stroke: #fff;
   }
-  .pref:hover {
-    fill: #ffcc66;
+  .active {
+    fill: #ff9966;
   }
-  #info {
-    margin-top: 15px;
-    font-size: 18px;
-    min-height: 1.5em;
+  button {
+    margin: 4px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    background: #ddd;
+  }
+  button:hover {
+    background: #bbb;
   }
 </style>
 </head>
 <body>
 
-<h2>日本地図（47都道府県）</h2>
+<h2>日本地図（地方検索）</h2>
 
-<!-- 簡略化された47都道府県SVG -->
+<!-- 地方検索 -->
+<div>
+  <button onclick="selectRegion('関東')">関東</button>
+  <button onclick="selectRegion('関西')">関西</button>
+  <button onclick="selectRegion('中部')">中部</button>
+  <button onclick="selectRegion('東北')">東北</button>
+  <button onclick="selectRegion('九州')">九州</button>
+</div>
+
+<!-- 簡略リアル地図（後で完全SVGに差し替え） -->
 <svg viewBox="0 0 600 900">
-
-  <!-- 北海道 -->
-  <path class="pref" d="M420 40 L540 60 L520 160 L420 140 Z"
-    onclick="showPref('北海道')" />
-
-  <!-- 東北 -->
-  <path class="pref" d="M430 180 L520 200 L500 300 L420 280 Z"
-    onclick="showPref('青森・岩手・宮城・秋田・山形・福島')" />
-
-  <!-- 関東 -->
-  <path class="pref" d="M420 310 L520 330 L500 420 L420 400 Z"
-    onclick="showPref('茨城・栃木・群馬・埼玉・千葉・東京・神奈川')" />
-
-  <!-- 中部 -->
-  <path class="pref" d="M360 360 L420 380 L400 480 L340 460 Z"
-    onclick="showPref('新潟・長野・山梨・静岡・愛知・岐阜・富山・石川・福井')" />
-
-  <!-- 関西 -->
-  <path class="pref" d="M300 430 L360 450 L340 540 L280 520 Z"
-    onclick="showPref('三重・滋賀・京都・大阪・兵庫・奈良・和歌山')" />
-
-  <!-- 中国 -->
-  <path class="pref" d="M200 470 L300 500 L280 560 L180 530 Z"
-    onclick="showPref('鳥取・島根・岡山・広島・山口')" />
-
-  <!-- 四国 -->
-  <path class="pref" d="M260 590 L340 610 L320 660 L240 640 Z"
-    onclick="showPref('徳島・香川・愛媛・高知')" />
-
-  <!-- 九州 -->
-  <path class="pref" d="M160 650 L260 690 L230 820 L130 780 Z"
-    onclick="showPref('福岡・佐賀・長崎・熊本・大分・宮崎・鹿児島')" />
-
-  <!-- 沖縄 -->
-  <path class="pref" d="M80 820 L140 840 L120 880 L60 860 Z"
-    onclick="showPref('沖縄')" />
-
+  <path id="関東" class="pref" d="M420 310 L520 330 L500 420 L420 400 Z"/>
+  <path id="関西" class="pref" d="M300 430 L360 450 L340 540 L280 520 Z"/>
+  <path id="中部" class="pref" d="M360 360 L420 380 L400 480 L340 460 Z"/>
+  <path id="東北" class="pref" d="M430 180 L520 200 L500 300 L420 280 Z"/>
+  <path id="九州" class="pref" d="M160 650 L260 690 L230 820 L130 780 Z"/>
 </svg>
 
-<div id="info">県をクリックしてください</div>
+<h3 id="regionTitle">地方を選択してください</h3>
+<div id="prefList"></div>
 
 <script>
-function showPref(name) {
-  document.getElementById("info").textContent =
-    name + " を選択しました";
+const regionData = {
+  "関東": ["東京", "神奈川", "千葉", "埼玉", "茨城", "栃木", "群馬"],
+  "関西": ["大阪", "京都", "兵庫", "奈良", "滋賀", "和歌山", "三重"],
+  "中部": ["愛知", "静岡", "長野", "新潟", "岐阜", "富山", "石川", "福井", "山梨"],
+  "東北": ["青森", "岩手", "宮城", "秋田", "山形", "福島"],
+  "九州": ["福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島"]
+};
+
+function selectRegion(region) {
+  document.querySelectorAll(".pref").forEach(p => p.classList.remove("active"));
+  document.getElementById(region).classList.add("active");
+
+  document.getElementById("regionTitle").textContent = region + "地方";
+  document.getElementById("prefList").innerHTML =
+    regionData[region].map(p => `<div>${p}</div>`).join("");
 }
 </script>
 
