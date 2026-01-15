@@ -93,7 +93,7 @@
 </head>
 <body>
     <!-- Jmap表示位置 -->
-    <div id="jmap"
+    <div id="jmap">
         <div class="jmap-infobox">
             <h5 class="h5">世界に一つだけの地図</h5>
             <p>地図をクリックするとモーダルが表示されます。</p>
