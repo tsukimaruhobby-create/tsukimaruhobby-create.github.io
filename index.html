@@ -6,10 +6,14 @@
 
   <div id="my-map"></div>
 
-  <script>
+<script>
 var d = new jpmap.japanMap(document.getElementById("my-map"), {
-    onSelect: function(data){
-      alert(data.name);
+  showsPrefectureName: true, //都道府県名を表示させる
+  width: 1000,　//横幅のサイズ
+  movesIslands: true, //沖縄地方が地図の左上の分離されたスペースに移動する
+  lang: 'ja', //表示させている都道府県名を日本語にする
+  onSelect: function(data){
+    alert(data.name);
   }
 });
 </script>
