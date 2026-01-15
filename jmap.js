@@ -98,7 +98,7 @@
             <h5 class="h5">世界に一つだけの地図</h5>
             <p>地図をクリックするとモーダルが表示されます。</p>
         </div>
-    ></div>
+    </div>
 
     <!-- モーダル用HTML -->
     <div class="modal fade" id="prefectureModal" tabindex="-1" role="dialog" aria-labelledby="prefectureModalCenterTitle" aria-hidden="true">
