@@ -1,81 +1,125 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>月丸マップ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月丸マップ</title>
 
-  <!-- jpmap CSS（必須） -->
-  <link rel="stylesheet" href="jmap.css">
+<!-- CSS -->
+<link rel="stylesheet" href="jmap.css">
 
-  <!-- jpmap.js -->
-  <script src="jmap.js"></script>
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont,
+      "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    background: #f8f9fa;
+  }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Hiragino Kaku Gothic ProN", sans-serif;
-      background: #fafafa;
-      text-align: center;
-    }
+  header {
+    text-align: center;
+    padding: 12px 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+  }
 
-    header {
-      padding: 12px 0;
-      font-size: 22px;
-      font-weight: bold;
-      background: #ffffff;
-      border-bottom: 1px solid #ddd;
-    }
-
-    #map-wrapper {
-      width: 100%;
-      max-width: 480px; /* スマホ基準 */
-      margin: 0 auto;
-      padding: 8px;
-    }
-
-    #my-map {
-      width: 100%;
-      min-height: 420px; /* ← これ超重要 */
-    }
-  </style>
+  #my-map {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+</style>
 </head>
+
 <body>
 
-  <header>月丸マップ</header>
+<header>月丸マップ</header>
 
-  <div id="map-wrapper">
-    <div id="my-map"></div>
-  </div>
+<div id="my-map"></div>
 
-  <script>
-    const prefecturePages = {
-      "北海道": "hokkaido.html",
-      "東京都": "tokyo.html",
-      "神奈川県": "kanagawa.html",
-      "大阪府": "osaka.html",
-      "沖縄県": "okinawa.html"
-      // 47都道府県分追加可能
-    };
+<script src="jmap.js"></script>
+<script>
+const map = new jpmap.japanMap(
+  document.getElementById("my-map"),
+  {
+    width: window.innerWidth < 768 ? 360 : 720,
+    showsPrefectureName: true,
+    movesIslands: true,
+    lang: 'ja',
 
-    const map = new jpmap.japanMap(
-      document.getElementById("my-map"),
-      {
-        showsPrefectureName: true,
-        movesIslands: true,
-        lang: "ja",
+    prefecture: {
+      /* 北海道 */
+      1: { color: "#9b8ce3" },
 
-        onSelect: function (data) {
-          const page = prefecturePages[data.name];
-          if (page) {
-            location.href = page;
-          } else {
-            alert(data.name + " のページは準備中です");
-          }
-        }
-      }
-    );
-  </script>
+      /* 東北 */
+      2: { color: "#6fa8dc" },
+      3: { color: "#6fa8dc" },
+      4: { color: "#6fa8dc" },
+      5: { color: "#6fa8dc" },
+      6: { color: "#6fa8dc" },
+      7: { color: "#6fa8dc" },
+
+      /* 関東 */
+      8:  { color: "#76c8e8" },
+      9:  { color: "#76c8e8" },
+      10: { color: "#76c8e8" },
+      11: { color: "#76c8e8" },
+      12: { color: "#76c8e8" },
+      13: { color: "#76c8e8" },
+      14: { color: "#76c8e8" },
+
+      /* 中部 */
+      15: { color: "#7fd39a" },
+      16: { color: "#7fd39a" },
+      17: { color: "#7fd39a" },
+      18: { color: "#7fd39a" },
+      19: { color: "#7fd39a" },
+      20: { color: "#7fd39a" },
+      21: { color: "#7fd39a" },
+      22: { color: "#7fd39a" },
+      23: { color: "#7fd39a" },
+
+      /* 近畿 */
+      24: { color: "#f5d76e" },
+      25: { color: "#f5d76e" },
+      26: { color: "#f5d76e" },
+      27: { color: "#f5d76e" },
+      28: { color: "#f5d76e" },
+      29: { color: "#f5d76e" },
+      30: { color: "#f5d76e" },
+
+      /* 中国 */
+      31: { color: "#f2a65a" },
+      32: { color: "#f2a65a" },
+      33: { color: "#f2a65a" },
+      34: { color: "#f2a65a" },
+      35: { color: "#f2a65a" },
+
+      /* 四国 */
+      36: { color: "#eb6b6b" },
+      37: { color: "#eb6b6b" },
+      38: { color: "#eb6b6b" },
+      39: { color: "#eb6b6b" },
+
+      /* 九州・沖縄 */
+      40: { color: "#f4a7c5" },
+      41: { color: "#f4a7c5" },
+      42: { color: "#f4a7c5" },
+      43: { color: "#f4a7c5" },
+      44: { color: "#f4a7c5" },
+      45: { color: "#f4a7c5" },
+      46: { color: "#f4a7c5" },
+      47: { color: "#f4a7c5" }
+    },
+
+    onSelect: function(data) {
+      location.href = data.code + ".html";
+    }
+  }
+);
+</script>
 
 </body>
 </html>
