@@ -5,31 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>月丸マップ</title>
 
-<!-- CSS -->
 <link rel="stylesheet" href="jmap.css">
 
 <style>
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont,
-      "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-    background: #f8f9fa;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  background: #f8f9fa;
+}
 
-  header {
-    text-align: center;
-    padding: 12px 0;
-    font-size: 1.6rem;
-    font-weight: 600;
-    background: #ffffff;
-    border-bottom: 1px solid #ddd;
-  }
+header {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
 
-  #my-map {
-    width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
-  }
+#my-map {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
 </style>
 </head>
 
@@ -41,77 +40,77 @@
 
 <script src="jmap.js"></script>
 <script>
-const map = new jpmap.japanMap(
+new jpmap.japanMap(
   document.getElementById("my-map"),
   {
     width: window.innerWidth < 768 ? 360 : 720,
     showsPrefectureName: true,
     movesIslands: true,
-    lang: 'ja',
+    lang: "ja",
 
-    prefecture: {
+    prefectureStyles: {
       /* 北海道 */
-      1: { color: "#9b8ce3" },
+      1: { fill: "#9b8ce3" },
 
       /* 東北 */
-      2: { color: "#6fa8dc" },
-      3: { color: "#6fa8dc" },
-      4: { color: "#6fa8dc" },
-      5: { color: "#6fa8dc" },
-      6: { color: "#6fa8dc" },
-      7: { color: "#6fa8dc" },
+      2: { fill: "#6fa8dc" },
+      3: { fill: "#6fa8dc" },
+      4: { fill: "#6fa8dc" },
+      5: { fill: "#6fa8dc" },
+      6: { fill: "#6fa8dc" },
+      7: { fill: "#6fa8dc" },
 
       /* 関東 */
-      8:  { color: "#76c8e8" },
-      9:  { color: "#76c8e8" },
-      10: { color: "#76c8e8" },
-      11: { color: "#76c8e8" },
-      12: { color: "#76c8e8" },
-      13: { color: "#76c8e8" },
-      14: { color: "#76c8e8" },
+      8:  { fill: "#76c8e8" },
+      9:  { fill: "#76c8e8" },
+      10: { fill: "#76c8e8" },
+      11: { fill: "#76c8e8" },
+      12: { fill: "#76c8e8" },
+      13: { fill: "#76c8e8" },
+      14: { fill: "#76c8e8" },
 
       /* 中部 */
-      15: { color: "#7fd39a" },
-      16: { color: "#7fd39a" },
-      17: { color: "#7fd39a" },
-      18: { color: "#7fd39a" },
-      19: { color: "#7fd39a" },
-      20: { color: "#7fd39a" },
-      21: { color: "#7fd39a" },
-      22: { color: "#7fd39a" },
-      23: { color: "#7fd39a" },
+      15: { fill: "#7fd39a" },
+      16: { fill: "#7fd39a" },
+      17: { fill: "#7fd39a" },
+      18: { fill: "#7fd39a" },
+      19: { fill: "#7fd39a" },
+      20: { fill: "#7fd39a" },
+      21: { fill: "#7fd39a" },
+      22: { fill: "#7fd39a" },
+      23: { fill: "#7fd39a" },
 
       /* 近畿 */
-      24: { color: "#f5d76e" },
-      25: { color: "#f5d76e" },
-      26: { color: "#f5d76e" },
-      27: { color: "#f5d76e" },
-      28: { color: "#f5d76e" },
-      29: { color: "#f5d76e" },
-      30: { color: "#f5d76e" },
+      24: { fill: "#f5d76e" },
+      25: { fill: "#f5d76e" },
+      26: { fill: "#f5d76e" },
+      27: { fill: "#f5d76e" },
+      28: { fill: "#f5d76e" },
+      29: { fill: "#f5d76e" },
+      30: { fill: "#f5d76e" },
 
       /* 中国 */
-      31: { color: "#f2a65a" },
-      32: { color: "#f2a65a" },
-      33: { color: "#f2a65a" },
-      34: { color: "#f2a65a" },
-      35: { color: "#f2a65a" },
+      31: { fill: "#f2a65a" },
+      32: { fill: "#f2a65a" },
+      33: { fill: "#f2a65a" },
+      34: { fill: "#f2a65a" },
+      35: { fill: "#f2a65a" },
 
       /* 四国 */
-      36: { color: "#eb6b6b" },
-      37: { color: "#eb6b6b" },
-      38: { color: "#eb6b6b" },
-      39: { color: "#eb6b6b" },
+      36: { fill: "#eb6b6b" },
+      37: { fill: "#eb6b6b" },
+      38: { fill: "#eb6b6b" },
+      39: { fill: "#eb6b6b" },
 
       /* 九州・沖縄 */
-      40: { color: "#f4a7c5" },
-      41: { color: "#f4a7c5" },
-      42: { color: "#f4a7c5" },
-      43: { color: "#f4a7c5" },
-      44: { color: "#f4a7c5" },
-      45: { color: "#f4a7c5" },
-      46: { color: "#f4a7c5" },
-      47: { color: "#f4a7c5" }
+      40: { fill: "#f4a7c5" },
+      41: { fill: "#f4a7c5" },
+      42: { fill: "#f4a7c5" },
+      43: { fill: "#f4a7c5" },
+      44: { fill: "#f4a7c5" },
+      45: { fill: "#f4a7c5" },
+      46: { fill: "#f4a7c5" },
+      47: { fill: "#f4a7c5" }
     },
 
     onSelect: function(data) {
