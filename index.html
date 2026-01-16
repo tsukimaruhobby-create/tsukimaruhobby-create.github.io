@@ -1,83 +1,48 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>jpmap 動作確認</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>月丸マップ</title>
+  <!-- jpmap.js（コピペしたもの） -->
+  <script src="jmap.js"></script>
 
-<!-- jQuery -->
-<script src="./jquery.min.js"></script>
-
-<!-- jmap -->
-<link rel="stylesheet" href="./jmap.css">
-<script src="./jmap.js"></script>
-
-<style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont,
-               "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  background: #f5f6f8;
-}
-
-header {
-  text-align: center;
-  font-size: 1.6rem;
-  font-weight: bold;
-  padding: 12px 0;
-  background: #ffffff;
-  border-bottom: 1px solid #ddd;
-}
-
-#jmap {
-  width: 100%;
-  max-width: 420px;
-  height: 520px;
-  margin: 0 auto;
-}
-</style>
-
-<script>
-$(function () {
-
-  $('#jmap').jmap({
-    mapPath: './map/',
-
-    width: '100%',
-    height: '520px',
-
-    showInfobox: true,
-    fontSize: '0.8rem',
-    fontColor: '#333',
-
-    areas: [
-      { code: 1, name: "北海道", color: "#7f7eda", hoverColor: "#b3b2ee", url: "hokkaido.html" },
-
-      { code: 13, name: "東京", color: "#7ecfea", hoverColor: "#b7e5f4", url: "tokyo.html" },
-      { code: 27, name: "大阪", color: "#ffe966", hoverColor: "#fff19c", url: "osaka.html" },
-
-      { code: 40, name: "福岡", color: "#ff9999", hoverColor: "#ffbdbd", url: "fukuoka.html" },
-      { code: 47, name: "沖縄", color: "#eb98ff", hoverColor: "#f5c9ff", url: "okinawa.html" }
-    ],
-
-    onSelect: function (e, data) {
-      if (data.url) {
-        location.href = data.url;
-      }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: sans-serif;
     }
-
-  });
-
-});
-</script>
+    #my-map {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>月丸マップ</header>
+  <h1>jpmap 動作確認</h1>
 
-<div id="jmap"></div>
+  <!-- 地図の描画先 -->
+  <div id="my-map"></div>
+
+  <script>
+    const map = new jpmap.japanMap(
+      document.getElementById("my-map"),
+      {
+        width: 800,
+        showsPrefectureName: true,
+        movesIslands: true,
+        lang: "ja",
+        onSelect: function (data) {
+          alert("クリック：" + data.name);
+        }
+      }
+    );
+  </script>
 
 </body>
 </html>
