@@ -1,124 +1,45 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>月丸マップ</title>
-
-<link rel="stylesheet" href="jmap.css">
-
-<style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  background: #f8f9fa;
-}
-
-header {
-  text-align: center;
-  padding: 12px 0;
-  font-size: 1.6rem;
-  font-weight: 600;
-  background: #ffffff;
-  border-bottom: 1px solid #ddd;
-}
-
-#my-map {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-}
-</style>
-</head>
-
-<body>
-
-<header>月丸マップ</header>
-
-<div id="my-map"></div>
-
 <script src="jmap.js"></script>
 <script>
-new jpmap.japanMap(
-  document.getElementById("my-map"),
-  {
-    width: window.innerWidth < 768 ? 360 : 720,
-    showsPrefectureName: true,
-    movesIslands: true,
-    lang: "ja",
+function drawMap() {
+  const wrapper = document.getElementById("map-wrapper");
+  const width = wrapper.clientWidth;
 
-    prefectureStyles: {
-      /* 北海道 */
-      1: { fill: "#9b8ce3" },
+  wrapper.innerHTML = '<div id="my-map"></div>';
 
-      /* 東北 */
-      2: { fill: "#6fa8dc" },
-      3: { fill: "#6fa8dc" },
-      4: { fill: "#6fa8dc" },
-      5: { fill: "#6fa8dc" },
-      6: { fill: "#6fa8dc" },
-      7: { fill: "#6fa8dc" },
+  new jpmap.japanMap(
+    document.getElementById("my-map"),
+    {
+      width: width,
+      showsPrefectureName: true,
+      movesIslands: true,
+      lang: "ja",
 
-      /* 関東 */
-      8:  { fill: "#76c8e8" },
-      9:  { fill: "#76c8e8" },
-      10: { fill: "#76c8e8" },
-      11: { fill: "#76c8e8" },
-      12: { fill: "#76c8e8" },
-      13: { fill: "#76c8e8" },
-      14: { fill: "#76c8e8" },
+      prefectureStyles: {
+        1:{fill:"#9b8ce3"},
+        2:{fill:"#6fa8dc"},3:{fill:"#6fa8dc"},4:{fill:"#6fa8dc"},
+        5:{fill:"#6fa8dc"},6:{fill:"#6fa8dc"},7:{fill:"#6fa8dc"},
+        8:{fill:"#76c8e8"},9:{fill:"#76c8e8"},10:{fill:"#76c8e8"},
+        11:{fill:"#76c8e8"},12:{fill:"#76c8e8"},13:{fill:"#76c8e8"},14:{fill:"#76c8e8"},
+        15:{fill:"#7fd39a"},16:{fill:"#7fd39a"},17:{fill:"#7fd39a"},
+        18:{fill:"#7fd39a"},19:{fill:"#7fd39a"},20:{fill:"#7fd39a"},
+        21:{fill:"#7fd39a"},22:{fill:"#7fd39a"},23:{fill:"#7fd39a"},
+        24:{fill:"#f5d76e"},25:{fill:"#f5d76e"},26:{fill:"#f5d76e"},
+        27:{fill:"#f5d76e"},28:{fill:"#f5d76e"},29:{fill:"#f5d76e"},30:{fill:"#f5d76e"},
+        31:{fill:"#f2a65a"},32:{fill:"#f2a65a"},33:{fill:"#f2a65a"},
+        34:{fill:"#f2a65a"},35:{fill:"#f2a65a"},
+        36:{fill:"#eb6b6b"},37:{fill:"#eb6b6b"},38:{fill:"#eb6b6b"},39:{fill:"#eb6b6b"},
+        40:{fill:"#f4a7c5"},41:{fill:"#f4a7c5"},42:{fill:"#f4a7c5"},
+        43:{fill:"#f4a7c5"},44:{fill:"#f4a7c5"},45:{fill:"#f4a7c5"},
+        46:{fill:"#f4a7c5"},47:{fill:"#f4a7c5"}
+      },
 
-      /* 中部 */
-      15: { fill: "#7fd39a" },
-      16: { fill: "#7fd39a" },
-      17: { fill: "#7fd39a" },
-      18: { fill: "#7fd39a" },
-      19: { fill: "#7fd39a" },
-      20: { fill: "#7fd39a" },
-      21: { fill: "#7fd39a" },
-      22: { fill: "#7fd39a" },
-      23: { fill: "#7fd39a" },
-
-      /* 近畿 */
-      24: { fill: "#f5d76e" },
-      25: { fill: "#f5d76e" },
-      26: { fill: "#f5d76e" },
-      27: { fill: "#f5d76e" },
-      28: { fill: "#f5d76e" },
-      29: { fill: "#f5d76e" },
-      30: { fill: "#f5d76e" },
-
-      /* 中国 */
-      31: { fill: "#f2a65a" },
-      32: { fill: "#f2a65a" },
-      33: { fill: "#f2a65a" },
-      34: { fill: "#f2a65a" },
-      35: { fill: "#f2a65a" },
-
-      /* 四国 */
-      36: { fill: "#eb6b6b" },
-      37: { fill: "#eb6b6b" },
-      38: { fill: "#eb6b6b" },
-      39: { fill: "#eb6b6b" },
-
-      /* 九州・沖縄 */
-      40: { fill: "#f4a7c5" },
-      41: { fill: "#f4a7c5" },
-      42: { fill: "#f4a7c5" },
-      43: { fill: "#f4a7c5" },
-      44: { fill: "#f4a7c5" },
-      45: { fill: "#f4a7c5" },
-      46: { fill: "#f4a7c5" },
-      47: { fill: "#f4a7c5" }
-    },
-
-    onSelect: function(data) {
-      location.href = data.code + ".html";
+      onSelect: function(data) {
+        location.href = data.code + ".html";
+      }
     }
-  }
-);
-</script>
+  );
+}
 
-</body>
-</html>
+drawMap();
+window.addEventListener("resize", drawMap);
+</script>
