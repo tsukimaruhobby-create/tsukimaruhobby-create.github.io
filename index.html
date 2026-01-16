@@ -2,43 +2,76 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>jpmap 動作確認</title>
+  <title>月丸マップ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- jpmap.js（コピペしたもの） -->
+  <!-- jpmap.js -->
   <script src="jmap.js"></script>
 
   <style>
     body {
       margin: 0;
       padding: 0;
+      font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+      background: #fafafa;
       text-align: center;
-      font-family: sans-serif;
     }
+
+    header {
+      padding: 12px 0;
+      font-size: 22px;
+      font-weight: bold;
+      background: #ffffff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    #map-wrapper {
+      width: 100%;
+      max-width: 420px; /* スマホ基準 */
+      margin: 0 auto;
+    }
+
     #my-map {
       width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
     }
   </style>
 </head>
 <body>
 
-  <h1>jpmap 動作確認</h1>
+  <!-- タイトル -->
+  <header>月丸マップ</header>
 
-  <!-- 地図の描画先 -->
-  <div id="my-map"></div>
+  <!-- 地図 -->
+  <div id="map-wrapper">
+    <div id="my-map"></div>
+  </div>
 
   <script>
+    const prefecturePages = {
+      "北海道": "hokkaido.html",
+      "青森県": "aomori.html",
+      "東京都": "tokyo.html",
+      "神奈川県": "kanagawa.html",
+      "大阪府": "osaka.html",
+      "沖縄県": "okinawa.html"
+      // 必要に応じて47都道府県分追加
+    };
+
     const map = new jpmap.japanMap(
       document.getElementById("my-map"),
       {
-        width: 800,
+        width: 420,
         showsPrefectureName: true,
         movesIslands: true,
         lang: "ja",
+
         onSelect: function (data) {
-          alert("クリック：" + data.name);
+          const page = prefecturePages[data.name];
+          if (page) {
+            location.href = page;
+          } else {
+            alert(data.name + " のページは未作成です");
+          }
         }
       }
     );
