@@ -10,23 +10,23 @@
 <style>
 body {
   margin: 0;
+  background: #f5f5f5;
   font-family: -apple-system, BlinkMacSystemFont,
     "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  background: #f8f9fa;
 }
 
 header {
   text-align: center;
-  padding: 12px 0;
-  font-size: 1.6rem;
-  font-weight: 600;
+  padding: 10px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
   background: #ffffff;
   border-bottom: 1px solid #ddd;
 }
 
 #my-map {
   width: 100%;
-  max-width: 720px;
+  max-width: 900px;
   margin: 0 auto;
 }
 </style>
@@ -39,52 +39,73 @@ header {
 <div id="my-map"></div>
 
 <script src="jmap.js"></script>
-<script src="jmap.js"></script>
 <script>
-function drawMap() {
-  const wrapper = document.getElementById("map-wrapper");
-  const width = wrapper.clientWidth;
-
-  wrapper.innerHTML = '<div id="my-map"></div>';
-
-  new jpmap.japanMap(
-    document.getElementById("my-map"),
-    {
-      width: width,
-      showsPrefectureName: true,
-      movesIslands: true,
-      lang: "ja",
-
-      prefectureStyles: {
-        1:{fill:"#9b8ce3"},
-        2:{fill:"#6fa8dc"},3:{fill:"#6fa8dc"},4:{fill:"#6fa8dc"},
-        5:{fill:"#6fa8dc"},6:{fill:"#6fa8dc"},7:{fill:"#6fa8dc"},
-        8:{fill:"#76c8e8"},9:{fill:"#76c8e8"},10:{fill:"#76c8e8"},
-        11:{fill:"#76c8e8"},12:{fill:"#76c8e8"},13:{fill:"#76c8e8"},14:{fill:"#76c8e8"},
-        15:{fill:"#7fd39a"},16:{fill:"#7fd39a"},17:{fill:"#7fd39a"},
-        18:{fill:"#7fd39a"},19:{fill:"#7fd39a"},20:{fill:"#7fd39a"},
-        21:{fill:"#7fd39a"},22:{fill:"#7fd39a"},23:{fill:"#7fd39a"},
-        24:{fill:"#f5d76e"},25:{fill:"#f5d76e"},26:{fill:"#f5d76e"},
-        27:{fill:"#f5d76e"},28:{fill:"#f5d76e"},29:{fill:"#f5d76e"},30:{fill:"#f5d76e"},
-        31:{fill:"#f2a65a"},32:{fill:"#f2a65a"},33:{fill:"#f2a65a"},
-        34:{fill:"#f2a65a"},35:{fill:"#f2a65a"},
-        36:{fill:"#eb6b6b"},37:{fill:"#eb6b6b"},38:{fill:"#eb6b6b"},39:{fill:"#eb6b6b"},
-        40:{fill:"#f4a7c5"},41:{fill:"#f4a7c5"},42:{fill:"#f4a7c5"},
-        43:{fill:"#f4a7c5"},44:{fill:"#f4a7c5"},45:{fill:"#f4a7c5"},
-        46:{fill:"#f4a7c5"},47:{fill:"#f4a7c5"}
-      },
-
-      onSelect: function(data) {
-        location.href = data.code + ".html";
-      }
+/* ======================
+   地図生成
+====================== */
+const map = new jpmap.japanMap(
+  document.getElementById("my-map"),
+  {
+    width: Math.min(window.innerWidth, 900),
+    showsPrefectureName: true,
+    movesIslands: true,
+    lang: "ja",
+    onSelect: function(data){
+      alert(data.name);
     }
-  );
+  }
+);
+
+/* ======================
+   SVGが生成されたか監視
+====================== */
+const colorTimer = setInterval(() => {
+  const paths = document.querySelectorAll("#my-map svg path");
+
+  if (paths.length > 0) {
+    clearInterval(colorTimer);
+    applyColors(paths);
+  }
+}, 50);
+
+/* ======================
+   色付け（安全）
+====================== */
+function applyColors(paths) {
+  const regionColors = {
+    1:"#9b8ce3",
+
+    2:"#6fa8dc",3:"#6fa8dc",4:"#6fa8dc",
+    5:"#6fa8dc",6:"#6fa8dc",7:"#6fa8dc",
+
+    8:"#76c8e8",9:"#76c8e8",10:"#76c8e8",
+    11:"#76c8e8",12:"#76c8e8",13:"#76c8e8",14:"#76c8e8",
+
+    15:"#7fd39a",16:"#7fd39a",17:"#7fd39a",
+    18:"#7fd39a",19:"#7fd39a",20:"#7fd39a",
+    21:"#7fd39a",22:"#7fd39a",23:"#7fd39a",
+
+    24:"#f5d76e",25:"#f5d76e",26:"#f5d76e",
+    27:"#f5d76e",28:"#f5d76e",29:"#f5d76e",30:"#f5d76e",
+
+    31:"#f2a65a",32:"#f2a65a",33:"#f2a65a",
+    34:"#f2a65a",35:"#f2a65a",
+
+    36:"#eb6b6b",37:"#eb6b6b",38:"#eb6b6b",39:"#eb6b6b",
+
+    40:"#f4a7c5",41:"#f4a7c5",42:"#f4a7c5",
+    43:"#f4a7c5",44:"#f4a7c5",45:"#f4a7c5",
+    46:"#f4a7c5",47:"#f4a7c5"
+  };
+
+  paths.forEach(path => {
+    const code = path.getAttribute("data-code");
+    if (regionColors[code]) {
+      path.style.fill = regionColors[code];
+    }
+  });
 }
-
-drawMap();
-window.addEventListener("resize", drawMap);
 </script>
-
 
 </body>
 </html>
