@@ -1,3 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月丸マップ</title>
+
+<link rel="stylesheet" href="jmap.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  background: #f8f9fa;
+}
+
+header {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+
+#my-map {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+</style>
+</head>
+
+<body>
+
+<header>月丸マップ</header>
+
+<div id="my-map"></div>
+
+<script src="jmap.js"></script>
 <script src="jmap.js"></script>
 <script>
 function drawMap() {
@@ -43,3 +84,7 @@ function drawMap() {
 drawMap();
 window.addEventListener("resize", drawMap);
 </script>
+
+
+</body>
+</html>
