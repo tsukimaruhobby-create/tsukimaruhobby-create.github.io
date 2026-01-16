@@ -5,13 +5,15 @@
   <title>月丸マップ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- jpmap CSS（必須） -->
+  <link rel="stylesheet" href="jmap.css">
+
   <!-- jpmap.js -->
   <script src="jmap.js"></script>
 
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: "Hiragino Kaku Gothic ProN", sans-serif;
       background: #fafafa;
       text-align: center;
@@ -27,81 +29,38 @@
 
     #map-wrapper {
       width: 100%;
-      max-width: 420px; /* スマホ基準 */
+      max-width: 480px; /* スマホ基準 */
       margin: 0 auto;
+      padding: 8px;
     }
 
     #my-map {
       width: 100%;
+      min-height: 420px; /* ← これ超重要 */
     }
   </style>
 </head>
 <body>
 
-  <!-- タイトル -->
   <header>月丸マップ</header>
 
-  <!-- 地図 -->
   <div id="map-wrapper">
     <div id="my-map"></div>
   </div>
 
   <script>
-    const pageMap = {
-    "北海道": "hokkaido.html",
-    “青森”: "aomori.html",
-    “岩手”: "iwate.html",
-    “宮城”: "miyagi.html",
-    “秋田”: "akita.html",
-    ”山形: "yamagata.html",
-    “福島”: "fukushima.html",
-    “茨城”: "ibaraki.html",
-    “栃木”: "tochigi.html",
-    “群馬”: "gunma.html",
-    “埼玉”: "saitama.html",
-    “千葉”: "chiba.html",
-    “東京”: "tokyo.html",
-    “神奈川”: "kanagawa.html",
-    “新潟”: "niigata.html",
-    “富山”: "toyama.html",
-    “石川”: "ishikawa.html",
-    “福井”: "hukui.html",
-    “山梨”: "yamanashi.html",
-    “長野”: "nagano.html",
-    “岐阜”: "gihu.html",
-    “静岡”: "shizuoka.html",
-    “愛知”: "aichi.html",
-    “三重”: "mie.html",
-    “滋賀”: "shiga.html",
-    “京都”: "kyoto.html",
-    “大阪”: "osaka.html",
-    “兵庫”: "hyogo.html",
-    “奈良”: "nara.html",
-    “和歌山”: "wakayama.html",
-    “鳥取”: "tottori.html",
-    “島根”: "shimane.html",
-    “岡山”: "okayama.html",
-    “広島”: "hiroshima.html",
-    “山口”: "yamagichi.html",
-    “徳島”: "tokushima.html",
-    “香川”: "kagawa.html",
-    “愛媛”: "ehime.html",
-    “高知”: "kouchi.html",
-    “福岡”: "hukuoka.html",
-    “佐賀”: "saga.html",
-    “長崎”: ”nagasaki.html",
-    “熊本”: "kumamoto.html",
-    “大分”: "oita.html",
-    “長崎”: "nagasaki.html",
-    “鹿児島”: "kagoshima.html",
-    “沖縄”: "okinawa.html"
-      // 必要に応じて47都道府県分追加
+    const prefecturePages = {
+      "北海道": "hokkaido.html",
+      "東京都": "tokyo.html",
+      "神奈川県": "kanagawa.html",
+      "大阪府": "osaka.html",
+      "沖縄県": "okinawa.html"
+      // 47都道府県分追加可能
     };
 
     const map = new jpmap.japanMap(
       document.getElementById("my-map"),
       {
-        width: 420,
         showsPrefectureName: true,
         movesIslands: true,
         lang: "ja",
@@ -111,7 +70,7 @@
           if (page) {
             location.href = page;
           } else {
-            alert(data.name + " のページは未作成です");
+            alert(data.name + " のページは準備中です");
           }
         }
       }
