@@ -1,111 +1,536 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>月丸マップ</title>
+"use client";
 
-<link rel="stylesheet" href="jmap.css">
+import React, { useEffect, useState } from "react";
+import { MapPin } from "lucide-react";
 
-<style>
-body {
-  margin: 0;
-  background: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-}
+export default function HomePage() {
+  const [isMapReady, setIsMapReady] = useState(false);
 
-header {
-  text-align: center;
-  padding: 10px 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  background: #ffffff;
-  border-bottom: 1px solid #ddd;
-}
-
-#my-map {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-}
-</style>
-</head>
-
-<body>
-
-<header>月丸マップ</header>
-
-<div id="my-map"></div>
-
-<script src="jmap.js"></script>
-<script>
-/* ======================
-   地図生成
-====================== */
-const map = new jpmap.japanMap(
-  document.getElementById("my-map"),
-  {
-    width: Math.min(window.innerWidth, 900),
-    showsPrefectureName: true,
-    movesIslands: true,
-    lang: "ja",
-    onSelect: function(data){
-      alert(data.name);
-    }
-  }
-);
-
-/* ======================
-   SVGが生成されたか監視
-====================== */
-const colorTimer = setInterval(() => {
-  const paths = document.querySelectorAll("#my-map svg path");
-
-  if (paths.length > 0) {
-    clearInterval(colorTimer);
-    applyColors(paths);
-  }
-}, 50);
-
-/* ======================
-   色付け（安全）
-====================== */
-function applyColors(paths) {
-  const regionColors = {
-    1:"#9b8ce3",
-
-    2:"#6fa8dc",3:"#6fa8dc",4:"#6fa8dc",
-    5:"#6fa8dc",6:"#6fa8dc",7:"#6fa8dc",
-
-    8:"#76c8e8",9:"#76c8e8",10:"#76c8e8",
-    11:"#76c8e8",12:"#76c8e8",13:"#76c8e8",14:"#76c8e8",
-
-    15:"#7fd39a",16:"#7fd39a",17:"#7fd39a",
-    18:"#7fd39a",19:"#7fd39a",20:"#7fd39a",
-    21:"#7fd39a",22:"#7fd39a",23:"#7fd39a",
-
-    24:"#f5d76e",25:"#f5d76e",26:"#f5d76e",
-    27:"#f5d76e",28:"#f5d76e",29:"#f5d76e",30:"#f5d76e",
-
-    31:"#f2a65a",32:"#f2a65a",33:"#f2a65a",
-    34:"#f2a65a",35:"#f2a65a",
-
-    36:"#eb6b6b",37:"#eb6b6b",38:"#eb6b6b",39:"#eb6b6b",
-
-    40:"#f4a7c5",41:"#f4a7c5",42:"#f4a7c5",
-    43:"#f4a7c5",44:"#f4a7c5",45:"#f4a7c5",
-    46:"#f4a7c5",47:"#f4a7c5"
+  // 都道府県IDマッピング
+  const prefectureMapping = {
+    1: "hokkaido",
+    2: "aomori",
+    3: "iwate",
+    4: "miyagi",
+    5: "akita",
+    6: "yamagata",
+    7: "fukushima",
+    8: "ibaraki",
+    9: "tochigi",
+    10: "gunma",
+    11: "saitama",
+    12: "chiba",
+    13: "tokyo",
+    14: "kanagawa",
+    15: "niigata",
+    16: "toyama",
+    17: "ishikawa",
+    18: "fukui",
+    19: "yamanashi",
+    20: "nagano",
+    21: "gifu",
+    22: "shizuoka",
+    23: "aichi",
+    24: "mie",
+    25: "shiga",
+    26: "kyoto",
+    27: "osaka",
+    28: "hyogo",
+    29: "nara",
+    30: "wakayama",
+    31: "tottori",
+    32: "shimane",
+    33: "okayama",
+    34: "hiroshima",
+    35: "yamaguchi",
+    36: "tokushima",
+    37: "kagawa",
+    38: "ehime",
+    39: "kochi",
+    40: "fukuoka",
+    41: "saga",
+    42: "nagasaki",
+    43: "kumamoto",
+    44: "oita",
+    45: "miyazaki",
+    46: "kagoshima",
+    47: "okinawa",
   };
 
-  paths.forEach(path => {
-    const code = path.getAttribute("data-code");
-    if (regionColors[code]) {
-      path.style.fill = regionColors[code];
-    }
-  });
-}
-</script>
+  useEffect(() => {
+    // jQueryとjmap.jsを動的に読み込む
+    const loadScript = (src) => {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    };
 
-</body>
-</html>
+    const initializeMap = async () => {
+      try {
+        // jQueryを先に読み込む
+        if (!window.jQuery) {
+          await loadScript(
+            "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+          );
+        }
+
+        // jmap.jsを読み込む
+        if (!window.jQuery.fn.jmap) {
+          await loadScript("https://yugokimura.github.io/jmap/jmap.js");
+        }
+
+        // 地図を初期化
+        window.$("#jmap-container").jmap({
+          width: "100%",
+          height: "600px",
+          showsPrefectureName: true,
+          prefectureNameType: "full",
+          lineColor: "#E8E8E8",
+          lineWidth: 2,
+          backgroundColor: "#FBFBFB",
+          prefectureLineColor: "#ffffff",
+          prefectureLineWidth: 2,
+          prefectureLineGap: "1px",
+          prefectureRadius: "8px",
+          fontSize: "0.75rem",
+          fontColor: "#000",
+          areas: [
+            {
+              code: 1,
+              name: "北海道",
+              color: "#FF6B6B",
+              hoverColor: "#FF8787",
+            },
+            {
+              code: 2,
+              name: "青森県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 3,
+              name: "岩手県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 4,
+              name: "宮城県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 5,
+              name: "秋田県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 6,
+              name: "山形県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 7,
+              name: "福島県",
+              color: "#4ECDC4",
+              hoverColor: "#6FE0D8",
+            },
+            {
+              code: 8,
+              name: "茨城県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 9,
+              name: "栃木県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 10,
+              name: "群馬県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 11,
+              name: "埼玉県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 12,
+              name: "千葉県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 13,
+              name: "東京都",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 14,
+              name: "神奈川県",
+              color: "#95E1D3",
+              hoverColor: "#ADEEE1",
+            },
+            {
+              code: 15,
+              name: "新潟県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 16,
+              name: "富山県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 17,
+              name: "石川県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 18,
+              name: "福井県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 19,
+              name: "山梨県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 20,
+              name: "長野県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 21,
+              name: "岐阜県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 22,
+              name: "静岡県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 23,
+              name: "愛知県",
+              color: "#F38181",
+              hoverColor: "#F59B9B",
+            },
+            {
+              code: 24,
+              name: "三重県",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 25,
+              name: "滋賀県",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 26,
+              name: "京都府",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 27,
+              name: "大阪府",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 28,
+              name: "兵庫県",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 29,
+              name: "奈良県",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 30,
+              name: "和歌山県",
+              color: "#AA96DA",
+              hoverColor: "#BEAAE4",
+            },
+            {
+              code: 31,
+              name: "鳥取県",
+              color: "#FCBAD3",
+              hoverColor: "#FDCBDF",
+            },
+            {
+              code: 32,
+              name: "島根県",
+              color: "#FCBAD3",
+              hoverColor: "#FDCBDF",
+            },
+            {
+              code: 33,
+              name: "岡山県",
+              color: "#FCBAD3",
+              hoverColor: "#FDCBDF",
+            },
+            {
+              code: 34,
+              name: "広島県",
+              color: "#FCBAD3",
+              hoverColor: "#FDCBDF",
+            },
+            {
+              code: 35,
+              name: "山口県",
+              color: "#FCBAD3",
+              hoverColor: "#FDCBDF",
+            },
+            {
+              code: 36,
+              name: "徳島県",
+              color: "#FFFFD2",
+              hoverColor: "#FFFFE0",
+            },
+            {
+              code: 37,
+              name: "香川県",
+              color: "#FFFFD2",
+              hoverColor: "#FFFFE0",
+            },
+            {
+              code: 38,
+              name: "愛媛県",
+              color: "#FFFFD2",
+              hoverColor: "#FFFFE0",
+            },
+            {
+              code: 39,
+              name: "高知県",
+              color: "#FFFFD2",
+              hoverColor: "#FFFFE0",
+            },
+            {
+              code: 40,
+              name: "福岡県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 41,
+              name: "佐賀県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 42,
+              name: "長崎県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 43,
+              name: "熊本県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 44,
+              name: "大分県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 45,
+              name: "宮崎県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 46,
+              name: "鹿児島県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+            {
+              code: 47,
+              name: "沖縄県",
+              color: "#A8E6CF",
+              hoverColor: "#BDEEDA",
+            },
+          ],
+          onSelect: function (e, data) {
+            const prefectureId = prefectureMapping[data.code];
+            if (prefectureId) {
+              window.location.href = `/prefecture/${prefectureId}`;
+            }
+          },
+        });
+
+        setIsMapReady(true);
+      } catch (error) {
+        console.error("地図の読み込みに失敗しました:", error);
+      }
+    };
+
+    initializeMap();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#FBFBFB] font-inter">
+      {/* Google Fonts */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+
+      {/* Header */}
+      <header className="bg-white border-b border-[#E8E8E8] px-6 py-5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <MapPin className="w-6 h-6 text-black" />
+            <h1 className="font-noto-sans-jp font-semibold text-xl text-black">
+              日本全国マップ
+            </h1>
+          </div>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-black opacity-60 hover:opacity-100 transition-opacity"
+          >
+            Instagram →
+          </a>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* Title Section */}
+        <div className="text-center mb-12">
+          <h2 className="font-noto-sans-jp font-medium text-3xl md:text-4xl text-black mb-4">
+            都道府県を選択してください
+          </h2>
+          <p className="text-sm text-[#4D4D4D] max-w-2xl mx-auto">
+            地方ごとに色分けされた日本地図から、気になる都道府県をクリックして詳細をご覧ください
+          </p>
+        </div>
+
+        {/* Map Legend */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#FF6B6B" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">北海道</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#4ECDC4" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">東北</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#95E1D3" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">関東</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#F38181" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">中部</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#AA96DA" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">関西</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#FCBAD3" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">中国</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#FFFFD2" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">四国</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: "#A8E6CF" }}
+            ></div>
+            <span className="text-xs font-noto-sans-jp text-black">
+              九州・沖縄
+            </span>
+          </div>
+        </div>
+
+        {/* Japan Map */}
+        <div className="bg-white rounded-lg border border-[#E8E8E8] p-8 shadow-sm">
+          <div id="jmap-container" className="w-full"></div>
+          {!isMapReady && (
+            <div className="flex items-center justify-center h-[600px]">
+              <p className="text-sm text-[#4D4D4D] font-noto-sans-jp">
+                地図を読み込んでいます...
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Info Section */}
+        <div className="mt-16 text-center">
+          <p className="text-xs text-black opacity-50">
+            各都道府県をクリックすると、投稿内容を確認できます
+          </p>
+        </div>
+      </main>
+
+      <style jsx global>{`
+        .font-inter {
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
+        }
+        .font-noto-sans-jp {
+          font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont,
+            "Segoe UI", sans-serif;
+        }
+      `}</style>
+    </div>
+  );
+}
